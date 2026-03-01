@@ -7,6 +7,10 @@ namespace StudentRepositoryGit.Repositories
 
         private int _nextId = 1;
 
+        public StudentsRepository()
+        {
+
+        }
       
     }
 }
