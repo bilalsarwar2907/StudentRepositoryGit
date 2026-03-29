@@ -6,9 +6,11 @@
         public string Name { get; set; }= string.Empty;
         public int BirthYear { get; set; }
 
+        public string Grade { get; set; }=string.Empty;
+
         public override string ToString()
         {
-            return $"Student(Id={Id}, Name={Name}, BirthYear={BirthYear})";
+            return $"Student(Id={Id}, Name={Name}, BirthYear={BirthYear},Grade = {Grade})";
         }
     }
 }

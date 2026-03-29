@@ -64,7 +64,7 @@ namespace StudentRepositoryGit.Controllers
 
         // POST api/<StudentsController>
         [HttpPost]
-        public Student Post([FromBody] Student newStudent)
+        public Student? Post([FromBody] Student newStudent)
         {
             return _repo.Add(newStudent);
         }

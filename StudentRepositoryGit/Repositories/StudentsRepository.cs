@@ -13,10 +13,10 @@ namespace StudentRepositoryGit.Repositories
         {
             if (includeData)
             {
-                Add(new Student { Name = "Alice", BirthYear = 2000 });
-                Add(new Student { Name = "Bob", BirthYear = 1995 });
-                Add(new Student { Name = "Charlie", BirthYear = 2002 });
-                Add(new Student { Name = "Diana", BirthYear = 1998 });
+                Add(new Student { Name = "Alice", BirthYear = 2000,Grade="A" });
+                Add(new Student { Name = "Bob", BirthYear = 1995, Grade = "B" });
+                Add(new Student { Name = "Charlie", BirthYear = 2002, Grade ="C" });
+                Add(new Student { Name = "Diana", BirthYear = 1998, Grade = "D" });
             }
 
 
@@ -50,6 +50,7 @@ namespace StudentRepositoryGit.Repositories
             {
                 student.Name = data.Name;
                 student.BirthYear = data.BirthYear;
+                student.Grade = data.Grade;
 
                 return student;
             }
@@ -156,7 +157,13 @@ namespace StudentRepositoryGit.Repositories
                    ? result.OrderByDescending(s => s.BirthYear)
                      : result.OrderBy(s => s.BirthYear);
                 }
-                                
+                if (sortBy == "grade")
+                {
+                    result = descending
+                   ? result.OrderByDescending(s => s.Grade)
+                     : result.OrderBy(s => s.Grade);
+                }
+
             }
             return result;
         }

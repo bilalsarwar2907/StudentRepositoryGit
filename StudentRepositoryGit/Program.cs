@@ -36,7 +36,7 @@ builder.Services.AddSwaggerGen(opt =>
         In = ParameterLocation.Header,
         Description = "Please enter token as: Bearer {your_token}",
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey, // Vi bruger ApiKey for at kunne skrive 'Bearer ' manuelt
+        Type = SecuritySchemeType.ApiKey, // we use ApiKey for just to write'Bearer ' by typing
         BearerFormat = "JWT",
         Scheme = "Bearer"
     });

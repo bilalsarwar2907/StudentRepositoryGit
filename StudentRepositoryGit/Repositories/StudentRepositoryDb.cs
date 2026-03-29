@@ -54,6 +54,7 @@ namespace StudentRepositoryGit.Repositories
             {
                 studentToUpdate.Name = student.Name;
                 studentToUpdate.BirthYear = student.BirthYear;
+                studentToUpdate.Grade = student.Grade;
                 _context.SaveChanges();
 
                 return studentToUpdate;
@@ -146,6 +147,12 @@ namespace StudentRepositoryGit.Repositories
                     result = descending
                    ? result.OrderByDescending(s => s.BirthYear)
                      : result.OrderBy(s => s.BirthYear);
+                }
+                if (sortBy == "grade")
+                {
+                    result = descending
+                   ? result.OrderByDescending(s => s.Grade)
+                     : result.OrderBy(s => s.Grade);
                 }
 
             }
