@@ -47,7 +47,7 @@ namespace StudentRepositoryGit.Tests
         [Fact]
         public void Add_ValidStudent_ReturnsAddedStudent()
         {
-            //Arange
+            //Arrange
             var repository = new StudentsRepository();
 
             var student = new Student { Name = "Bob", BirthYear = 1995 };
@@ -61,7 +61,7 @@ namespace StudentRepositoryGit.Tests
         [Fact]
         public void Delete_ValidStudent_ReturnsRemoveStudent()
         {
-            //Arange
+            //Arrange
             var repository = new StudentsRepository();
 
             var student = new Student { Name = "Bob", BirthYear = 1995 };
@@ -81,7 +81,7 @@ namespace StudentRepositoryGit.Tests
         [Fact]
         public void Delete_InvalidStudent_ReturnsNull()
         {
-            //Arange
+            //Arrange
             var repository = new StudentsRepository();
             // Act
             var studentToRemove = repository.Delete(999);
@@ -92,7 +92,7 @@ namespace StudentRepositoryGit.Tests
         [Fact]
         public void Update_ValidStudent_ReturnsUpdatedStudent()
         {
-            //Arange
+            //Arrange
             var repository = new StudentsRepository();
             var student = new Student { Name = "Bob", BirthYear = 1995 };
             var addedStudent = repository.Add(student);
