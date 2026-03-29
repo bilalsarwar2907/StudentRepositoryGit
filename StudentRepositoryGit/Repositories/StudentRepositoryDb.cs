@@ -1,84 +1,75 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StudentRepositoryGit.Data;
 using StudentRepositoryGit.Models;
-using System.Globalization;
+using System;
+using System.Linq;
+
 namespace StudentRepositoryGit.Repositories
 {
-    public class StudentsRepository : IStudentsRepository
+    public class StudentRepositoryDb : IStudentsRepository
     {
-        private readonly List<Student> _students = new List<Student>();
+        private readonly StudentDbContext _context;
 
-        private int _nextId = 1;
-
-        public StudentsRepository(bool includeData = false)
+        public StudentRepositoryDb(StudentDbContext context)
         {
-            if (includeData)
-            {
-                Add(new Student { Name = "Alice", BirthYear = 2000 });
-                Add(new Student { Name = "Bob", BirthYear = 1995 });
-                Add(new Student { Name = "Charlie", BirthYear = 2002 });
-                Add(new Student { Name = "Diana", BirthYear = 1998 });
-            }
-
-
+            _context = context;
         }
         public IEnumerable<Student> Get()
-
         {
-            return _students;
-
+            return _context.Students.AsEnumerable();
         }
+
         public Student? GetById(int id)
         {
-            return _students.FirstOrDefault(student => student.Id == id);
+            return _context.Students.Find(id);
         }
         public Student? Add(Student student)
         {
+
             if (student == null)
             {
-                throw new ArgumentNullException(nameof(student));
+                throw new ArgumentNullException(nameof(student)); 
             }
-
-            student.Id = _nextId++;
-            _students.Add(student);
-            return student;
-
+                _context.Add(student);
+                _context.SaveChanges();
+                 return student;
+                  
         }
-        public Student? Update(int id, Student data)
-        {
-            var student = GetById(id);
-            if (student != null)
-            {
-                student.Name = data.Name;
-                student.BirthYear = data.BirthYear;
-
-                return student;
-            }
-            return null;
-
-        }
-
         public Student? Delete(int id)
         {
-            var student = GetById(id);
-            if (student != null)
+            var studentToDelete = GetById(id);
+            if (studentToDelete != null)
+
             {
-                _students.Remove(student);
-                return student;
-            }
+                _context.Remove(studentToDelete);
+                _context.SaveChanges();
+                return studentToDelete;
+            } 
             return null;
         }
-
-        public IEnumerable<Student> Get(int? birthYearBefore, int? birthYearAfter, string? nameFilter)
-
+        public Student? Update(int id, Student student)
         {
+             var studentToUpdate = GetById(id);
+            if (studentToUpdate != null)
+            {
+                studentToUpdate.Name = student.Name;
+                studentToUpdate.BirthYear = student.BirthYear;
+                _context.SaveChanges();
 
+                return studentToUpdate;
+            }
+                return null;
+              
+        }
+        public IEnumerable<Student> Get(int? birthYearBefore, int? birthYearAfter, string? nameFilter)
+        {
             if (birthYearBefore > birthYearAfter && birthYearBefore != null && birthYearAfter != null)
             {
                 throw new ArgumentException("birthYearBefore " +
                   "cannot be greater than birthYearAfter.");
             }
 
-            IEnumerable<Student> result = _students.AsReadOnly();
+            IQueryable<Student> result = _context.Students;
 
             if (birthYearBefore != null)
             {
@@ -110,7 +101,7 @@ namespace StudentRepositoryGit.Repositories
                   "cannot be greater than birthYearAfter.");
             }
 
-            IEnumerable<Student> result = _students.AsReadOnly();
+            IQueryable<Student> result = _context.Students;
 
             if (birthYearBefore != null)
             {
@@ -156,10 +147,10 @@ namespace StudentRepositoryGit.Repositories
                    ? result.OrderByDescending(s => s.BirthYear)
                      : result.OrderBy(s => s.BirthYear);
                 }
-                                
+
             }
             return result;
         }
-
     }
 }
+
