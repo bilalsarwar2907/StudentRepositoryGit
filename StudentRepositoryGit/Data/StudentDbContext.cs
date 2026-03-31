@@ -1,16 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using StudentRepositoryGit.Models;
+using System;
 namespace StudentRepositoryGit.Data
 {
     public class StudentDbContext : DbContext
     {
-        private readonly StudentDbContext _context;
+     
+            public StudentDbContext(DbContextOptions<StudentDbContext> options) : base(options) 
+        { }
 
-        public StudentDbContext(StudentDbContext context)
-        {
-            _context = context;
-        }
-
-        public DbSet<Student> Students { get; set; }
+            public DbSet<Student> Students { get; set; }
+        
     }
 }

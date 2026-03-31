@@ -111,23 +111,23 @@ namespace StudentRepositoryGit.Tests
             // Arrange
             var repository = new StudentsRepository();
 
-            var student1 = new Student { Name = "Bob", BirthYear = 1990 };
-            var student2 = new Student { Name = "Alice", BirthYear = 2000 };
-            var student3 = new Student { Name = "Charlie", BirthYear = 2010 };
+            var student1 = new Student { Name = "Bob", BirthYear = 1990,Grade = "A" };
+            var student2 = new Student { Name = "Alice", BirthYear = 2000,Grade = "B" };
+            var student3 = new Student { Name = "Charlie", BirthYear = 2010,Grade = "C" };
 
             repository.Add(student1);
             repository.Add(student2);
             repository.Add(student3);
 
             // Act
-            var result = repository.Get(2005, null, null);
+            var result = repository.Get(2000, null, null,null);
 
             // Assert
-            // (You will check the count and which students are returned)
-            //Assert.Equal(2, result.Count);
-            Assert.Contains(student1, result);
-            Assert.Contains(student2, result);
-            Assert.DoesNotContain(student3, result);
+        
+                                   // Updated Assert for the test
+            Assert.Contains(student2, result); // Alice (2000) - now included because of >=
+            Assert.Contains(student3, result); // Charlie (2010)
+            Assert.DoesNotContain(student1, result); // Bob (1990) - still filtered out
         }
     }
 }

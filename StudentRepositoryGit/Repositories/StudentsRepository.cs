@@ -116,14 +116,14 @@ namespace StudentRepositoryGit.Repositories
             if (birthYearBefore != null)
             {
 
-                result = result.Where(s => s.BirthYear > birthYearBefore);
+                result = result.Where(s => s.BirthYear >= birthYearBefore);
 
             }
 
             if (birthYearAfter != null)
             {
 
-                result = result.Where(s => s.BirthYear < birthYearAfter);
+                result = result.Where(s => s.BirthYear <= birthYearAfter);
 
             }
             if (nameFilter != null)

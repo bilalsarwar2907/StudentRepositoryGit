@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StudentRepositoryGit.Data;
 using StudentRepositoryGit.Models;
 using StudentRepositoryGit.Repositories;
+using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +32,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
-    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "My Super Cat API", Version = "v1" });
+    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "My Super Student API", Version = "v1" });
 
     opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -59,7 +62,23 @@ builder.Services.AddSwaggerGen(opt =>
 });
 
 
-builder.Services.AddSingleton<StudentsRepository> (new StudentsRepository(true));
+//builder.Services.AddSingleton<StudentsRepository> (new StudentsRepository(true));
+// Always register DbContext
+builder.Services.AddDbContext<StudentDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Repository toggle
+var storageType = builder.Configuration["StorageType"];
+if (storageType == "Db")
+{
+    builder.Services.AddScoped<IStudentsRepository, StudentRepositoryDb>();
+}
+else
+{
+    builder.Services.AddSingleton<IStudentsRepository>(
+        new StudentsRepository(includeData: true));
+}
 
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
